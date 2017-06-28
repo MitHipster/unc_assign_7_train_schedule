@@ -1,0 +1,55 @@
+/* Base Element Styles
+   ------------------------- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  color: #222;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+
+/* Base Layout Styles
+   ------------------------- */
+
+/* Navigation  */
+
+
+
+/* Layout Containers */
+
+
+
+/* Page Elements */
+
+
+
+/* Media Queries
+   ------------------------- */
+
+@media screen and (min-width: 768px) {
+  
+  
+}
+
+
+/* Helper Classes
+   ------------------------- */
+
+.clearfix:before,
+.clearfix:after {
+  content: " ";
+  display: table;
+}
+
+.clearfix:after {
+  clear: both;
+}
+
+.clearfix {
+  *zoom: 1;
+}
