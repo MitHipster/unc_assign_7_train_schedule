@@ -5,16 +5,18 @@
     <title>TrainTrackr - Follow train schedules you care about</title>
     <meta name="author" content="Tim Acker">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://fonts.googleapis.com/css?family=Fira+Sans+Extra+Condensed|Lato:400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Fira+Sans+Extra+Condensed:400,600|Lato:400,700" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="assets/css/normalize.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/styles.css">
 
   </head>
   <body>
     <header>
-      <img id="logo" src="assets/img/train.svg" alt="Train on track icon">
-      <h1>Train<span>Trackr</span></h1>
-      <h3>Follow the train schedules you care about.</h3>
+      <div class="container">
+        <img id="logo" src="assets/img/train.svg" alt="Train on track icon">
+        <h1>Train<span>Trackr</span></h1>
+        <h3>Follow the train schedules you care about.</h3>
+      </div>
     </header>
     <main class="container">
       <h2>Current Train Schedule</h2>
@@ -28,10 +30,36 @@
             <th>Arrives In</th>
           </tr>
         </thead>
-        <tbody></tbody>
+        <tbody>
+          <tr>
+            <td>Trenton Express</td>
+            <td>Trenton</td>
+            <td>60</td>
+            <td>06:00 PM</td>
+            <td>30</td>
+          </tr><tr>
+            <td>Trenton Express</td>
+            <td>Trenton</td>
+            <td>60</td>
+            <td>06:00 PM</td>
+            <td>30</td>
+          </tr><tr>
+            <td>Trenton Express</td>
+            <td>Trenton</td>
+            <td>60</td>
+            <td>06:00 PM</td>
+            <td>30</td>
+          </tr><tr>
+            <td>Trenton Express</td>
+            <td>Trenton</td>
+            <td>60</td>
+            <td>06:00 PM</td>
+            <td>30</td>
+          </tr>
+        </tbody>
         <tfoot>
           <tr>
-            <td colspan="5"><em>* Frequency and Arrives In fields displayed in hours and minutes.</em></td>
+            <td colspan="5">* <strong>Frequency</strong> and <strong>Arrives In</strong> displayed in hours and minutes.</td>
           </tr>
         </tfoot>
       </table>
@@ -88,6 +116,8 @@
         <button id="add-train-btn" type="submit">Submit</button>
       </form>
     </main>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
   <script type="text/javascript" src="assets/js/app.js"></script>
   </body>
 </html>

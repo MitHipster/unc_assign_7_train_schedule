@@ -25,9 +25,18 @@ body {
   color: #222; }
 
 h1,
+h2,
 p {
   padding: 0;
   margin: 0; }
+
+h2 {
+  font-weight: 400;
+  text-align: center;
+  background-color: #13818d;
+  color: #fff;
+  margin-top: 2rem;
+  box-shadow: 0 8px 6px -6px #010c1a; }
 
 /* Layout Imports
    ------------------------- */
@@ -35,7 +44,11 @@ p {
    ------------------------- */
 .container {
   max-width: 1000px;
-  padding: 0 2rem; }
+  padding: 0 1rem;
+  margin: 0 auto; }
+  @media (min-width: 768px) {
+    .container {
+      padding: 0 2rem; } }
 
 /* Header Styles
    ------------------------- */
@@ -56,6 +69,20 @@ header {
 
 /* Table Styles
    ------------------------- */
+table {
+  width: 100%;
+  border-spacing: 0px; }
+  table th {
+    width: 20%;
+    text-align: left;
+    padding: 0.5rem;
+    padding-top: 1rem; }
+  table td {
+    padding: 0.5rem;
+    border-top: 1px solid #13293d; }
+  table tfoot td {
+    padding-top: 1rem; }
+
 /* Form Styles
    ------------------------- */
 /* Components Imports

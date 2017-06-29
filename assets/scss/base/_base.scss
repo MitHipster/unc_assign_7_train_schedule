@@ -16,7 +16,17 @@ body {
 }
 
 h1,
+h2,
 p {
   padding: 0;
   margin: 0;
+}
+
+h2 {
+  font-weight: 400;
+  text-align: center;
+  background-color: $color-bg-heading;
+  color: $color-text-light;
+  margin-top: 2rem;
+  box-shadow: 0 8px 6px -6px $color-shadow;
 }

@@ -7,9 +7,12 @@ $color-text-light: #fff;
 $color-text-dark: #222;
 
 $color-accent: #f45b69;
+$color-border: #13293d;
+$color-shadow: #010c1a;
 
 $color-bg-body: #e8f1f2;
-$color-bg-header: #13293d;
+$color-bg-banner: #13293d;
+$color-bg-heading: #13818d;
 
 // Font stacks
 
@@ -19,3 +22,12 @@ $stack-body: 'Fira Sans Extra Condensed', sans-serif;
 // Max width
 
 $max: 1000px;
+
+// Margins and Padding
+
+$pt: 1rem;
+$cell: 0.5rem;
+
+// Media query breakpoints
+
+$tablet-width: 768px;

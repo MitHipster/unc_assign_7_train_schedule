@@ -1,2 +1,22 @@
 /* Table Styles
    ------------------------- */
+
+table {
+  width: 100%;
+  border-spacing: 0px;
+  th {
+    width: 20%;
+    text-align: left;
+    padding: $cell;
+    padding-top: $pt;
+  }
+  td {
+    padding: $cell;
+    border-top: 1px solid $color-border;
+  }
+  tfoot {
+    td {
+      padding-top: $pt;
+    }
+  }
+}
