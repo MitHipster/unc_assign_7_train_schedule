@@ -1,61 +1,48 @@
+/* Global Imports
+   ------------------------- */
+/* Utils Imports
+   ------------------------- */
+/* Variables
+   ------------------------- */
+/* Extends
+   ------------------------- */
+/* Mixins
+   ------------------------- */
+/* Base Imports
+   ------------------------- */
 /* Base Element Styles
    ------------------------- */
 * {
   box-sizing: border-box;
   margin: 0;
-  padding: 0;
-}
+  padding: 0; }
 
 body {
   color: #222;
   font-size: 1rem;
-  line-height: 1.4;
-}
+  line-height: 1.4; }
 
 h1,
 p {
+  color: red;
   padding: 0;
-  margin: 0;
-}
+  margin: 0; }
 
-
-/* Base Layout Styles
+/* Layout Imports
+   ------------------------- */
+/* Container Styles
+   ------------------------- */
+/* Header Styles
+   ------------------------- */
+/* Table Styles
+   ------------------------- */
+/* Form Styles
+   ------------------------- */
+/* Components Imports
+   ------------------------- */
+/* Input Styles
+   ------------------------- */
+/* Button Styles
    ------------------------- */
 
-/* Navigation  */
-
-
-
-/* Layout Containers */
-
-
-
-/* Page Elements */
-
-
-
-/* Media Queries
-   ------------------------- */
-
-@media screen and (min-width: 768px) {
-  
-  
-}
-
-
-/* Helper Classes
-   ------------------------- */
-
-.clearfix:before,
-.clearfix:after {
-  content: " ";
-  display: table;
-}
-
-.clearfix:after {
-  clear: both;
-}
-
-.clearfix {
-  *zoom: 1;
-}
+/*# sourceMappingURL=styles.css.map */
