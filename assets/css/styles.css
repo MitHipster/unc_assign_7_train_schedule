@@ -18,13 +18,14 @@
   padding: 0; }
 
 body {
-  color: #222;
+  font-family: "Fira Sans Extra Condensed", sans-serif;
   font-size: 1rem;
-  line-height: 1.4; }
+  line-height: 1.4;
+  background-color: #e8f1f2;
+  color: #222; }
 
 h1,
 p {
-  color: red;
   padding: 0;
   margin: 0; }
 
@@ -32,8 +33,27 @@ p {
    ------------------------- */
 /* Container Styles
    ------------------------- */
+.container {
+  max-width: 1000px;
+  padding: 0 2rem; }
+
 /* Header Styles
    ------------------------- */
+header {
+  font-family: "Lato", sans-serif;
+  text-align: center;
+  background-color: #13293d;
+  color: #fff;
+  padding: 2rem 0 2.5rem; }
+  header #logo {
+    width: 144px;
+    height: 144px; }
+  header span {
+    color: #f45b69; }
+  header h3 {
+    font-weight: 400;
+    letter-spacing: 0.05rem; }
+
 /* Table Styles
    ------------------------- */
 /* Form Styles

@@ -8,14 +8,15 @@
 }
 
 body {
-  color: #222;
+  font-family: $stack-body;
   font-size: 1rem;
   line-height: 1.4;
+  background-color: $color-bg-body;
+  color: $color-text-dark;
 }
 
 h1,
 p {
-  color: red;
   padding: 0;
   margin: 0;
 }

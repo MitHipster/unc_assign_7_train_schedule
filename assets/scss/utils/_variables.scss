@@ -3,5 +3,19 @@
 
 // Functional color variables
 
+$color-text-light: #fff;
+$color-text-dark: #222;
+
+$color-accent: #f45b69;
+
+$color-bg-body: #e8f1f2;
+$color-bg-header: #13293d;
 
 // Font stacks
+
+$stack-heading: 'Lato', sans-serif;
+$stack-body: 'Fira Sans Extra Condensed', sans-serif;
+
+// Max width
+
+$max: 1000px;

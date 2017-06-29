@@ -1,2 +1,7 @@
 /* Container Styles
    ------------------------- */
+
+.container {
+  max-width: $max;
+  padding: 0 2rem;
+}
