@@ -65,55 +65,65 @@
       </table>
       <h2>Add Train</h2>
       <form>
-        <label for="train-name">Train Name</label>
-        <input id="train-name" type="text">
-        <label for="destination">Destination</label>
-        <input id="destination" type="text">
-        <fieldset>
-          <legend>First Train Name</legend>
-          <label for="first-train-hour">Hour</label>
-          <select id="first-train-hour">
-            <option value="1" selected>01</option>
-            <option value="2">02</option>
-            <option value="3">03</option>
-            <option value="4">04</option>
-            <option value="5">05</option>
-            <option value="6">06</option>
-            <option value="7">07</option>
-            <option value="8">08</option>
-            <option value="9">09</option>
-            <option value="10">10</option>
-            <option value="11">11</option>
-            <option value="12">12</option>
-          </select>
-          <label for="first-train-min">Min</label>
-          <select id="first-train-min">
-            <option value="0" selected>00</option>
-            <option value="5">05</option>
-            <option value="10">10</option>
-            <option value="15">15</option>
-            <option value="20">20</option>
-            <option value="25">25</option>
-            <option value="30">30</option>
-            <option value="35">35</option>
-            <option value="40">40</option>
-            <option value="45">45</option>
-            <option value="50">50</option>
-            <option value="55">55</option>
-          </select>
-          <input id="first-train-am" type="radio" name="first-train" value="am">
-          <label for="first-train-am">AM</label>
-          <input id="first-train-pm" type="radio" name="first-train" value="pm">
-          <label for="first-train-pm">PM</label>
-        </fieldset>
-        <fieldset>
-          <legend>Frequency</legend>
-          <label for="freq-hours">Hours</label>
-          <input id="freq-hours" type="text">
-          <label for="freq-mins">Mins</label>
-          <input id="freq-mins" type="text">
-        </fieldset>
-        <button id="add-train-btn" type="submit">Submit</button>
+        <div class="form-block">
+          <label for="train-name">Train Name</label>
+          <input id="train-name" type="text">
+        </div>
+        <div class="form-block">
+          <label for="destination">Destination</label>
+          <input id="destination" type="text">
+        </div>
+        <div class="form-block">
+          <fieldset>
+            <legend>First Train Time</legend>
+            <label for="first-train-hour">Hour</label>
+            <select id="first-train-hour">
+              <option value="1" selected>01</option>
+              <option value="2">02</option>
+              <option value="3">03</option>
+              <option value="4">04</option>
+              <option value="5">05</option>
+              <option value="6">06</option>
+              <option value="7">07</option>
+              <option value="8">08</option>
+              <option value="9">09</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+              <option value="12">12</option>
+            </select>
+            <label for="first-train-min">Min</label>
+            <select id="first-train-min">
+              <option value="0" selected>00</option>
+              <option value="5">05</option>
+              <option value="10">10</option>
+              <option value="15">15</option>
+              <option value="20">20</option>
+              <option value="25">25</option>
+              <option value="30">30</option>
+              <option value="35">35</option>
+              <option value="40">40</option>
+              <option value="45">45</option>
+              <option value="50">50</option>
+              <option value="55">55</option>
+            </select>
+            <input id="first-train-am" type="radio" name="first-train" value="am">
+            <label for="first-train-am">AM</label>
+            <input id="first-train-pm" type="radio" name="first-train" value="pm">
+            <label for="first-train-pm">PM</label>
+          </fieldset>
+        </div>
+        <div class="form-block">
+          <fieldset>
+            <legend>Frequency</legend>
+            <label for="freq-hours">Hours</label>
+            <input id="freq-hours" type="text">
+            <label for="freq-mins">Mins</label>
+            <input id="freq-mins" type="text">
+          </fieldset>
+        </div>
+        <div class="form-block">
+          <button id="add-train-btn" type="submit">Submit</button>
+        </div>
       </form>
     </main>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

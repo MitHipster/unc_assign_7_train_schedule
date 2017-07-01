@@ -7,16 +7,16 @@ table {
   th {
     width: 20%;
     text-align: left;
-    padding: $cell;
-    padding-top: $pt;
+    padding: 0.5rem;
+    padding-top: 1rem;
   }
   td {
-    padding: $cell;
+    padding: 0.5rem;
     border-top: 1px solid $color-border;
   }
   tfoot {
     td {
-      padding-top: $pt;
+      padding-top: 1rem;
     }
   }
 }
