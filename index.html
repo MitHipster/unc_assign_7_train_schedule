@@ -35,9 +35,9 @@
           <tr>
             <td>Trenton Express</td>
             <td>Trenton</td>
-            <td>60</td>
-            <td>06:00 PM</td>
-            <td>30</td>
+            <td>1 hr 00 min</td>
+            <td>6:00 PM</td>
+            <td>0 hr 30 min</td>
             <td>
               <img src="assets/img/edit.svg" alt="">
               <img src="assets/img/trash.svg" alt="">
@@ -45,9 +45,9 @@
           </tr><tr>
             <td>Trenton Express</td>
             <td>Trenton</td>
-            <td>60</td>
-            <td>06:00 PM</td>
-            <td>30</td>
+            <td>1 hr 00 min</td>
+            <td>6:00 PM</td>
+            <td>0 hr 30 min</td>
             <td>
               <img src="assets/img/edit.svg" alt="">
               <img src="assets/img/trash.svg" alt="">
@@ -55,9 +55,9 @@
           </tr><tr>
             <td>Trenton Express</td>
             <td>Trenton</td>
-            <td>60</td>
-            <td>06:00 PM</td>
-            <td>30</td>
+            <td>1 hr 00 min</td>
+            <td>6:00 PM</td>
+            <td>0 hr 30 min</td>
             <td>
               <img src="assets/img/edit.svg" alt="">
               <img src="assets/img/trash.svg" alt="">
@@ -65,20 +65,15 @@
           </tr><tr>
             <td>Trenton Express</td>
             <td>Trenton</td>
-            <td>60</td>
-            <td>06:00 PM</td>
-            <td>30</td>
+            <td>1 hr 00 min</td>
+            <td>6:00 PM</td>
+            <td>0 hr 30 min</td>
             <td>
               <img src="assets/img/edit.svg" alt="">
               <img src="assets/img/trash.svg" alt="">
             </td>
           </tr>
         </tbody>
-        <tfoot>
-          <tr>
-            <td colspan="6">* <strong>Frequency</strong> and <strong>Arrives In</strong> displayed in hours and minutes.</td>
-          </tr>
-        </tfoot>
       </table>
       <h2>Add Train</h2>
       <form>
@@ -87,29 +82,29 @@
           <input id="train-name" type="text" placeholder="Acela Express" required>
         </div>
         <div class="form-block">
-          <label for="destination">Destination</label>
-          <input id="destination" type="text" placeholder="Boston, MA" required>
+          <label for="train-dest">Destination</label>
+          <input id="train-dest" type="text" placeholder="Boston, MA" required>
         </div>
         <div class="form-block">
           <fieldset>
             <legend>First Train Time</legend>
-            <label for="first-train-hour">Hour</label>
-            <select id="first-train-hour">
-              <option value="1">01</option>
-              <option value="2">02</option>
-              <option value="3">03</option>
-              <option value="4">04</option>
-              <option value="5">05</option>
-              <option value="6" selected>06</option>
-              <option value="7">07</option>
-              <option value="8">08</option>
-              <option value="9">09</option>
+            <label for="train-hr">Hour</label>
+            <select id="train-hr">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6" selected>6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
               <option value="10">10</option>
               <option value="11">11</option>
               <option value="12">12</option>
             </select>
-            <label for="first-train-min">Min</label>
-            <select id="first-train-min">
+            <label for="train-min">Min</label>
+            <select id="train-min">
               <option value="0" selected>00</option>
               <option value="5">05</option>
               <option value="10">10</option>
@@ -123,23 +118,23 @@
               <option value="50">50</option>
               <option value="55">55</option>
             </select>
-            <input id="first-train-am" type="radio" name="first-train" value="am" checked="checked">
-            <label for="first-train-am">AM</label>
-            <input id="first-train-pm" type="radio" name="first-train" value="pm">
-            <label for="first-train-pm">PM</label>
+            <input id="train-am" type="radio" name="train-per" value="1" checked="checked">
+            <label for="train-am">AM</label>
+            <input id="train-pm" type="radio" name="train-per" value="2">
+            <label for="train-pm">PM</label>
           </fieldset>
         </div>
         <div class="form-block">
           <fieldset>
             <legend>Frequency</legend>
-            <label for="freq-hours">Hours</label>
-            <input id="freq-hours" type="text" placeholder="2" required>
+            <label for="freq-hrs">Hours</label>
+            <input id="freq-hrs" type="number" min="0" max="48" value="1" required>
             <label for="freq-mins">Mins</label>
-            <input id="freq-mins" type="text" placeholder="00" required>
+            <input id="freq-mins" type="number" min="0" max="59" value="0" required>
           </fieldset>
         </div>
         <div class="form-block">
-          <button id="add-train-btn" type="submit">Submit</button>
+          <button id="train-btn" type="submit">Submit</button>
         </div>
       </form>
     </main>

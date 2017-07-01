@@ -29,7 +29,7 @@ h2 {
   text-align: center;
   background-color: #13818d;
   color: #fff;
-  margin-top: 2rem;
+  margin-top: 2.5rem;
   padding: 0.25rem 0;
   box-shadow: 0 8px 6px -6px #010c1a; }
 
@@ -91,8 +91,6 @@ table {
         opacity: 1; }
     table td img:first-child {
       margin-right: 0.5rem; }
-  table tfoot td {
-    padding-top: 1rem; }
 
 /* Form Styles
    ------------------------- */
@@ -125,8 +123,7 @@ footer {
 .form-block > label {
   display: block;
   font-weight: 600;
-  padding-top: 1rem;
-  padding-bottom: 0.5rem; }
+  padding: 0.5rem 0; }
 .form-block > input {
   width: 100%; }
 
@@ -140,13 +137,14 @@ fieldset legend {
   font-weight: 600;
   padding: 0 0.25rem; }
 fieldset select {
+  width: 56px;
   height: 34px;
   margin-left: 0.25rem;
   margin-right: 0.5rem; }
-fieldset label[for="first-train-am"] {
+fieldset label[for="train-am"] {
   margin-right: 0.25rem; }
-fieldset input[type="text"] {
-  width: 44px;
+fieldset input[type="number"] {
+  width: 56px;
   margin-left: 0.25rem;
   margin-right: 0.5rem; }
 
