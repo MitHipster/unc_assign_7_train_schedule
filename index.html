@@ -84,23 +84,23 @@
       <form>
         <div class="form-block">
           <label for="train-name">Train Name</label>
-          <input id="train-name" type="text">
+          <input id="train-name" type="text" placeholder="Acela Express" required>
         </div>
         <div class="form-block">
           <label for="destination">Destination</label>
-          <input id="destination" type="text">
+          <input id="destination" type="text" placeholder="Boston, MA" required>
         </div>
         <div class="form-block">
           <fieldset>
             <legend>First Train Time</legend>
             <label for="first-train-hour">Hour</label>
             <select id="first-train-hour">
-              <option value="1" selected>01</option>
+              <option value="1">01</option>
               <option value="2">02</option>
               <option value="3">03</option>
               <option value="4">04</option>
               <option value="5">05</option>
-              <option value="6">06</option>
+              <option value="6" selected>06</option>
               <option value="7">07</option>
               <option value="8">08</option>
               <option value="9">09</option>
@@ -123,7 +123,7 @@
               <option value="50">50</option>
               <option value="55">55</option>
             </select>
-            <input id="first-train-am" type="radio" name="first-train" value="am">
+            <input id="first-train-am" type="radio" name="first-train" value="am" checked="checked">
             <label for="first-train-am">AM</label>
             <input id="first-train-pm" type="radio" name="first-train" value="pm">
             <label for="first-train-pm">PM</label>
@@ -133,9 +133,9 @@
           <fieldset>
             <legend>Frequency</legend>
             <label for="freq-hours">Hours</label>
-            <input id="freq-hours" type="text">
+            <input id="freq-hours" type="text" placeholder="2" required>
             <label for="freq-mins">Mins</label>
-            <input id="freq-mins" type="text">
+            <input id="freq-mins" type="text" placeholder="00" required>
           </fieldset>
         </div>
         <div class="form-block">
@@ -149,7 +149,9 @@
       </div>
     </footer>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+  <script type="text/javascript" src="assets/js/config.js"></script>
   <script type="text/javascript" src="assets/js/app.js"></script>
   </body>
 </html>

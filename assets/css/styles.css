@@ -84,7 +84,11 @@ table {
     table td img {
       width: 24px;
       height: 24px;
-      cursor: pointer; }
+      cursor: pointer;
+      opacity: 0.6;
+      transition: opacity 0.4s ease-out; }
+      table td img:hover {
+        opacity: 1; }
     table td img:first-child {
       margin-right: 0.5rem; }
   table tfoot td {
@@ -158,6 +162,6 @@ button {
   border: none;
   transition: background-color 0.4s ease-out; }
   button:hover {
-    background-color: #ef1327; }
+    background-color: #da0f21; }
 
 /*# sourceMappingURL=styles.css.map */
