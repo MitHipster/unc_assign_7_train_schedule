@@ -16,6 +16,7 @@ const $freqHrs = $('#freq-hrs');
 const $freqMins = $('#freq-mins');
 const $trainAddBtn = $('#train-add-btn');
 const $trainEditBtn = $('#train-edit-btn');
+const $trainCancelBtn = $('#train-cancel-btn');
 
 const editImg = "assets/img/edit.svg";
 const delImg = "assets/img/trash.svg";
@@ -34,6 +35,9 @@ let trainHrDef = "6";
 let trainMinDef = "0";
 let freqHrsDef = "1";
 let freqMinsDef = "0";
+
+// Declare variable to hold whether or not Edit button is hidden
+let isEditBtn = false;
 
 // Submit button click event to get and push user input to firebase database
 $trainAddBtn.on('click', function (e) {
@@ -59,21 +63,34 @@ $trainAddBtn.on('click', function (e) {
     freqMins: freqMins,
     timestamp: firebase.database.ServerValue.TIMESTAMP
   });
-  // Call function to clear form
-  resetForm();
+  // Call function to reset form passing display styles for buttons
+  resetForm('inline-block', 'none');
+});
+
+// Cancel button click event to clear and reset form
+$trainCancelBtn.on('click', function () {
+  // Call function to reset form passing display styles for buttons
+  resetForm('inline-block', 'none');
 });
 
 // Delete button click event to remove node from firebase and remove element from table
 $tableBody.on('click', '.delete', function () {
+  if (isEditBtn) {
+    // Call function to reset form passing display styles for buttons
+    resetForm('inline-block', 'none');
+  }
   // Call function to get table row ID that equals node key
   let key = nodeKey($(this));
   // // Query firebase database using key value and remove node
   db.ref().child(key).remove();
   $(`#${key}`).remove();
+  // Below function call is made if Edit button is NOT hidden
 });
 
 // Edit button click event to load node data back into form for editing
 $tableBody.on('click', '.edit', function () {
+  // Call function to reset form passing display styles for buttons
+  resetForm('none', 'inline-block');
   // Call function to get table row ID that equals node key
   let key = nodeKey($(this));
   // Query firebase database using key value and population form with results
@@ -88,9 +105,6 @@ $tableBody.on('click', '.edit', function () {
     $freqHrs.val(data.freqHrs);
     $freqMins.val(data.freqMins);
   });
-  // Show Edit button and hide Add button
-  $trainAddBtn.css('display', 'none');
-  $trainEditBtn.css('display', 'inline-block');
 });
 
 // Event to retrieve firebase train data to populate table
@@ -129,7 +143,8 @@ let nodeKey = function (obj) {
 };
 
 // Function to clear or set to default the form's input fields
-let resetForm = function () {
+let resetForm = function (add, edit) {
+  // Reset input fields
   $trainName.val("");
   $trainDest.val("");
   $trainHr.val(trainHrDef);
@@ -138,5 +153,11 @@ let resetForm = function () {
   $trainPm.prop('checked', false);
   $freqHrs.val(freqHrsDef);
   $freqMins.val(freqMinsDef);
+  
+  // Reset form buttons
+  $trainAddBtn.css('display', add);
+  $trainEditBtn.css('display', edit);
+  // If Add button display is none, Edit button state is true
+  isEditBtn = (add === 'none' ? true : false);
 };
 
