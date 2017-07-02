@@ -13,7 +13,10 @@ const $freqHrs = $('#freq-hrs');
 const $freqMins = $('#freq-mins');
 const $trainBtn = $('#train-btn');
 
-// Declare variables to hold inputs
+const editImg = "assets/img/edit.svg";
+const delImg = "assets/img/trash.svg";
+
+// Declare variables to hold input values
 let trainName = "";
 let trainDest = "";
 let trainHr = 0;
@@ -34,5 +37,40 @@ $trainBtn.on('click', function (e) {
   trainPer = parseInt($trainPer.val());
   freqHrs = parseInt($freqHrs.val());
   freqMins = parseInt($freqMins.val());
-  console.log(trainName, trainDest, trainHr, trainMin, trainPer, freqHrs, freqMins);
+  
+  // Push user input for train into database
+  db.ref().push({
+    trainName: trainName,
+    trainDest: trainDest,
+    trainHr: trainHr,
+    trainMin: trainMin,
+    trainPer: trainPer,
+    freqHrs: freqHrs,
+    freqMins: freqMins,
+    timestamp: firebase.database.ServerValue.TIMESTAMP
+  });
+});
+
+// On child added, retrieve last train info object from databse and insert into table
+db.ref().orderByChild('timestamp').limitToLast(1).on('child_added', function (snapshot) {
+  let key = snapshot.key;
+  let data = snapshot.val();
+  let html;
+  html = 
+    `<tr id="${key}">
+      <td>${data.trainName}</td>
+      <td>${data.trainDest}</td>
+      <td>${data.freqHrs} hrs ${data.freqMins} mins</td>
+      <td>6:00 PM</td>
+      <td>0 hr 30 min</td>
+      <td>
+        <img src="${editImg}" alt="">
+        <img src="${delImg}" alt="">
+      </td>
+    </tr>`;
+  $('tbody').append(html);
+  console.log(key, data.trainName, data.trainDest, data.trainHr);
+// Error handler
+}, function (errorObj) {
+  console.log("Error handled: " + errorObj.code);
 });
