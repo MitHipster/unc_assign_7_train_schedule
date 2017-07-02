@@ -9,6 +9,8 @@ const $trainName = $('#train-name');
 const $trainDest = $('#train-dest');
 const $trainHr = $('#train-hr');
 const $trainMin = $('#train-min');
+const $trainAm = $('#train-am');
+const $trainPm = $('#train-pm');
 const $freqHrs = $('#freq-hrs');
 const $freqMins = $('#freq-mins');
 const $trainBtn = $('#train-btn');
@@ -24,6 +26,12 @@ let trainMin = 0;
 let trainPer = 0;
 let freqHrs = 0;
 let freqMins = 0;
+
+// Declare variables for input field defaults
+let trainHrDef = "6";
+let trainMinDef = "0";
+let freqHrsDef = "1";
+let freqMinsDef = "0";
 
 // Submit button click event to get and push user input to firebase database
 $trainBtn.on('click', function (e) {
@@ -49,6 +57,8 @@ $trainBtn.on('click', function (e) {
     freqMins: freqMins,
     timestamp: firebase.database.ServerValue.TIMESTAMP
   });
+  // Call function to clear form
+  resetForm();
 });
 
 // Event to retrieve firebase train data to populate table
@@ -79,5 +89,17 @@ let createHtml = function (snapshot) {
     </tr>`;
   $('tbody').append(html);
   console.log(key, data.trainName, data.trainDest, data.trainHr);
+};
+
+// Function to clear or set to default the form's input fields
+let resetForm = function () {
+  $trainName.val("");
+  $trainDest.val("");
+  $trainHr.val(trainHrDef);
+  $trainMin.val(trainMinDef);
+  $trainAm.prop('checked', true);
+  $trainPm.prop('checked', false);
+  $freqHrs.val(freqHrsDef);
+  $freqMins.val(freqMinsDef);
 };
 
