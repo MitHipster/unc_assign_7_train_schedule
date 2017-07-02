@@ -15,7 +15,7 @@ const $trainPm = $('#train-pm');
 const $freqHrs = $('#freq-hrs');
 const $freqMins = $('#freq-mins');
 const $trainAddBtn = $('#train-add-btn');
-const $trainEditBtn = $('#train-edit-btn');
+const $trainSaveBtn = $('#train-save-btn');
 const $trainCancelBtn = $('#train-cancel-btn');
 
 const editImg = "assets/img/edit.svg";
@@ -36,8 +36,8 @@ let trainMinDef = "0";
 let freqHrsDef = "1";
 let freqMinsDef = "0";
 
-// Declare variable to hold whether or not Edit button is hidden
-let isEditBtn = false;
+// Declare variable to hold whether or not Save button is hidden
+let isSaveBtn = false;
 
 // Submit button click event to get and push user input to firebase database
 $trainAddBtn.on('click', function (e) {
@@ -75,7 +75,8 @@ $trainCancelBtn.on('click', function () {
 
 // Delete button click event to remove node from firebase and remove element from table
 $tableBody.on('click', '.delete', function () {
-  if (isEditBtn) {
+  // Below function call is made if Save button is NOT hidden
+  if (isSaveBtn) {
     // Call function to reset form passing display styles for buttons
     resetForm('inline-block', 'none');
   }
@@ -84,7 +85,6 @@ $tableBody.on('click', '.delete', function () {
   // // Query firebase database using key value and remove node
   db.ref().child(key).remove();
   $(`#${key}`).remove();
-  // Below function call is made if Edit button is NOT hidden
 });
 
 // Edit button click event to load node data back into form for editing
@@ -143,7 +143,7 @@ let nodeKey = function (obj) {
 };
 
 // Function to clear or set to default the form's input fields
-let resetForm = function (add, edit) {
+let resetForm = function (add, save) {
   // Reset input fields
   $trainName.val("");
   $trainDest.val("");
@@ -156,8 +156,8 @@ let resetForm = function (add, edit) {
   
   // Reset form buttons
   $trainAddBtn.css('display', add);
-  $trainEditBtn.css('display', edit);
-  // If Add button display is none, Edit button state is true
-  isEditBtn = (add === 'none' ? true : false);
+  $trainSaveBtn.css('display', save);
+  // If Add button display is none, Save button state is true
+  isSaveBtn = (add === 'none' ? true : false);
 };
 
