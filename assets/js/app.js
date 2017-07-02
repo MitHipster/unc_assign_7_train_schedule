@@ -5,6 +5,7 @@
 let db = firebase.database();
 
 // Set elements as jQuery objects
+const $tableBody = $('tbody');
 const $trainName = $('#train-name');
 const $trainDest = $('#train-dest');
 const $trainHr = $('#train-hr');
@@ -13,7 +14,8 @@ const $trainAm = $('#train-am');
 const $trainPm = $('#train-pm');
 const $freqHrs = $('#freq-hrs');
 const $freqMins = $('#freq-mins');
-const $trainBtn = $('#train-btn');
+const $trainAddBtn = $('#train-add-btn');
+const $trainEditBtn = $('#train-edit-btn');
 
 const editImg = "assets/img/edit.svg";
 const delImg = "assets/img/trash.svg";
@@ -34,7 +36,7 @@ let freqHrsDef = "1";
 let freqMinsDef = "0";
 
 // Submit button click event to get and push user input to firebase database
-$trainBtn.on('click', function (e) {
+$trainAddBtn.on('click', function (e) {
   e.preventDefault();
   // This needs to be assigned in the click event or the default value will get stored
   let $trainPer = $('[name="train-per"]:checked');
@@ -61,6 +63,36 @@ $trainBtn.on('click', function (e) {
   resetForm();
 });
 
+// Delete button click event to remove node from firebase and remove element from table
+$tableBody.on('click', '.delete', function () {
+  // Call function to get table row ID that equals node key
+  let key = nodeKey($(this));
+  // // Query firebase database using key value and remove node
+  db.ref().child(key).remove();
+  $(`#${key}`).remove();
+});
+
+// Edit button click event to load node data back into form for editing
+$tableBody.on('click', '.edit', function () {
+  // Call function to get table row ID that equals node key
+  let key = nodeKey($(this));
+  // Query firebase database using key value and population form with results
+  db.ref().child(key).once('value').then(function (snapshot) {
+    let data = snapshot.val();
+    $trainName.val(data.trainName);
+    $trainDest.val(data.trainDest);
+    $trainHr.val(data.trainHr);
+    $trainMin.val(data.trainMin);
+    $trainAm.prop('checked', data.trainPer === 1 ? true: false);
+    $trainPm.prop('checked', data.trainPer === 2 ? true: false);
+    $freqHrs.val(data.freqHrs);
+    $freqMins.val(data.freqMins);
+  });
+  // Show Edit button and hide Add button
+  $trainAddBtn.css('display', 'none');
+  $trainEditBtn.css('display', 'inline-block');
+});
+
 // Event to retrieve firebase train data to populate table
 db.ref().orderByChild('timestamp').on('child_added', function (snapshot) {
   // Call createHtml function
@@ -83,12 +115,17 @@ let createHtml = function (snapshot) {
       <td>6:00 PM</td>
       <td>0 hr 30 min</td>
       <td>
-        <img src="${editImg}" alt="">
-        <img src="${delImg}" alt="">
+        <img class="edit" src="${editImg}" alt="">
+        <img class="delete" src="${delImg}" alt="">
       </td>
     </tr>`;
-  $('tbody').append(html);
+  $tableBody.append(html);
   console.log(key, data.trainName, data.trainDest, data.trainHr);
+};
+
+// Function to return key assigned to table row element
+let nodeKey = function (obj) {
+  return obj.parents('tr').attr('id');
 };
 
 // Function to clear or set to default the form's input fields
