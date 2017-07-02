@@ -30,8 +30,8 @@ $trainBtn.on('click', function (e) {
   e.preventDefault();
   // This needs to be assigned in the click event or the default value will get stored
   let $trainPer = $('[name="train-per"]:checked');
-  trainName = $trainName.val();
-  trainDest = $trainDest.val();
+  trainName = $trainName.val().trim();
+  trainDest = $trainDest.val().trim();
   trainHr = parseInt($trainHr.val());
   trainMin = parseInt($trainMin.val());
   trainPer = parseInt($trainPer.val());
@@ -51,8 +51,17 @@ $trainBtn.on('click', function (e) {
   });
 });
 
-// On child added, retrieve last train info object from databse and insert into table
-db.ref().orderByChild('timestamp').limitToLast(1).on('child_added', function (snapshot) {
+// Event to retrieve firebase train data to populate table
+db.ref().orderByChild('timestamp').on('child_added', function (snapshot) {
+  // Call createHtml function
+  createHtml(snapshot);
+// Error handler
+}, function (errorObj) {
+  console.log("Error handled: " + errorObj.code);
+});
+
+// Function to create and append table row with firebase train data
+let createHtml = function (snapshot) {
   let key = snapshot.key;
   let data = snapshot.val();
   let html;
@@ -70,7 +79,5 @@ db.ref().orderByChild('timestamp').limitToLast(1).on('child_added', function (sn
     </tr>`;
   $('tbody').append(html);
   console.log(key, data.trainName, data.trainDest, data.trainHr);
-// Error handler
-}, function (errorObj) {
-  console.log("Error handled: " + errorObj.code);
-});
+};
+
