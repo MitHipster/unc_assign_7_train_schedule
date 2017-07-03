@@ -154,6 +154,7 @@ let buildHtml = function (snapshot, type) {
   let data = snapshot.val();
   // Call function to get train's next arrival time
   let nextTrain = nextArrival(data);
+  let arrives = arrivesIn(nextTrain);
   let html;
   // Build out table data
   let tableData = 
@@ -161,7 +162,7 @@ let buildHtml = function (snapshot, type) {
       <td>${data.trainDest}</td>
       <td>${data.freqHrs} hrs ${data.freqMins} mins</td>
       <td>${nextTrain}</td>
-      <td>0 hr 30 min</td>
+      <td>${arrives}</td>
       <td>
         <img class="edit" src="${editImg}" alt="">
         <img class="delete" src="${delImg}" alt="">
@@ -187,6 +188,29 @@ let nodeKey = function (obj) {
   return obj.parents('tr').attr('id');
 };
 
+// Function to calculate train's next arrival time
+let nextArrival = function (data) {
+  // Switch first train's hour to 24 hour format
+  let trainHr = data.trainPer === 1 ? data.trainHr : data.trainHr + 12;
+  // Set first train time using moment function
+  let firstTrain = moment({hours: trainHr, minutes: data.trainMin});
+  // While first train time is less than current time, add train frequency
+  while (firstTrain.isBefore(moment(), 'minute')) {
+    firstTrain.add({hours: data.freqHrs, minutes: data.freqMins});
+  }
+  return firstTrain.format('h:mm A');
+};
+
+// Function to calculate difference between current time and next arrival time
+let arrivesIn = function (nextTrain) {
+  // Store difference in minutes
+  let delta = moment(nextTrain, 'h:mm A').diff(moment(), 'minutes', true);
+  // Round to nearest whole number
+  delta = Math.round(delta);
+  delta = Math.floor(delta / 60) + ' hrs ' + delta % 60 + ' mins';
+  return delta;
+};
+
 // Function to clear or set to default the form's input fields
 let resetForm = function (add, save) {
   // Reset input fields
@@ -209,15 +233,20 @@ let resetForm = function (add, save) {
   isSaveBtn = (add === 'none' ? true : false);
 };
 
-// Function to calculate train's next arrival time
-let nextArrival = function (data) {
-  // Switch first train's hour to 24 hour format
-  let trainHr = data.trainPer === 1 ? data.trainHr : data.trainHr + 12;
-  // Set first train time using moment function
-  let firstTrain = moment({hours: trainHr, minutes: data.trainMin});
-  // While first train time is less than current time, add train frequency
-  while (firstTrain.isBefore(moment(), 'minute')) {
-    firstTrain.add({hours: data.freqHrs, minutes: data.freqMins});
-  }
-  return firstTrain.format('h:mm A');
-};
+//var jsLang = 'jquery';
+//switch (jsLang) { 
+//	case 'jquery': 
+//		alert('jQuery Wins!');
+//		break;
+//	case 'prototype': 
+//		alert('prototype Wins!');
+//		break;
+//	case 'mootools': 
+//		alert('mootools Wins!');
+//		break;		
+//	case 'dojo': 
+//		alert('dojo Wins!');
+//		break;
+//	default:
+//		alert('Nobody Wins!');
+//}
