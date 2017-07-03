@@ -92,7 +92,6 @@ $tableBody.on('click', '.edit', function () {
   let key = nodeKey($(this));
   // Store key as data attribute on Save button
   $trainSaveBtn.attr('data-key', key);
-  console.log($trainSaveBtn.data('key'));
   // Query firebase database using key value and population form with results
   db.ref().child(key).once('value').then(function (snapshot) {
     let data = snapshot.val();
@@ -109,8 +108,17 @@ $tableBody.on('click', '.edit', function () {
 
 // Event to retrieve firebase train data to populate table
 db.ref().orderByChild('timestamp').on('child_added', function (snapshot) {
-  // Call createHtml function
-  createHtml(snapshot);
+  // Call create function
+  buildHtml(snapshot, 'create');
+// Error handler
+}, function (errorObj) {
+  console.log("Error handled: " + errorObj.code);
+});
+
+// Event to update firebase train node and table data
+db.ref().on('child_changed', function (snapshot) {
+  // Call update function
+  buildHtml(snapshot, 'update');
 // Error handler
 }, function (errorObj) {
   console.log("Error handled: " + errorObj.code);
@@ -140,14 +148,14 @@ let getFormInput = function () {
   return trainObj;
 };
 
-// Function to create and append table row with firebase train data
-let createHtml = function (snapshot) {
+// Function to build and append table row or table data with firebase train data
+let buildHtml = function (snapshot, type) {
   let key = snapshot.key;
   let data = snapshot.val();
   let html;
-  html = 
-    `<tr id="${key}">
-      <td>${data.trainName}</td>
+  // Build out table data
+  let tableData = 
+     `<td>${data.trainName}</td>
       <td>${data.trainDest}</td>
       <td>${data.freqHrs} hrs ${data.freqMins} mins</td>
       <td>6:00 PM</td>
@@ -155,9 +163,21 @@ let createHtml = function (snapshot) {
       <td>
         <img class="edit" src="${editImg}" alt="">
         <img class="delete" src="${delImg}" alt="">
-      </td>
-    </tr>`;
-  $tableBody.append(html);
+      </td>`;
+  // If train data is new, add new table row
+  if (type === 'create') {
+    html = 
+     `<tr id="${key}">
+        ${tableData}
+      </tr>`;
+    $tableBody.append(html);
+  // Else update existing train data in table
+  } else {
+    html = tableData;
+    $tableBody.find(`#${key}`)
+      .empty()
+      .append(html);
+  }
 };
 
 // Function to return key assigned to table row element
