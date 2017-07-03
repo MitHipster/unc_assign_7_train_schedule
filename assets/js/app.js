@@ -154,13 +154,17 @@ let buildHtml = function (snapshot, type) {
   let data = snapshot.val();
   // Call function to get train's next arrival time
   let nextTrain = nextArrival(data);
+  // Call function to get time until arrival
   let arrives = arrivesIn(nextTrain);
+  // Function calls to format frequency
+  let freqHrs = formatHr(data.freqHrs);
+  let freqMins = formatMin(data.freqMins);
   let html;
   // Build out table data
   let tableData = 
      `<td>${data.trainName}</td>
       <td>${data.trainDest}</td>
-      <td>${data.freqHrs} hrs ${data.freqMins} mins</td>
+      <td>${freqHrs}${freqMins}</td>
       <td>${nextTrain}</td>
       <td>${arrives}</td>
       <td>
@@ -207,7 +211,8 @@ let arrivesIn = function (nextTrain) {
   let delta = moment(nextTrain, 'h:mm A').diff(moment(), 'minutes', true);
   // Round to nearest whole number
   delta = Math.round(delta);
-  delta = Math.floor(delta / 60) + ' hrs ' + delta % 60 + ' mins';
+  // Call function to format hours and mins
+  delta = formatHr(Math.floor(delta / 60)) + formatMin(delta % 60);
   return delta;
 };
 
@@ -233,20 +238,26 @@ let resetForm = function (add, save) {
   isSaveBtn = (add === 'none' ? true : false);
 };
 
-//var jsLang = 'jquery';
-//switch (jsLang) { 
-//	case 'jquery': 
-//		alert('jQuery Wins!');
-//		break;
-//	case 'prototype': 
-//		alert('prototype Wins!');
-//		break;
-//	case 'mootools': 
-//		alert('mootools Wins!');
-//		break;		
-//	case 'dojo': 
-//		alert('dojo Wins!');
-//		break;
-//	default:
-//		alert('Nobody Wins!');
-//}
+// Function to format hour(s) displayed in table
+let formatHr = function (hr) {
+  switch (hr) {
+    case 0:
+      return "";
+    case 1:
+      return hr + ' hr ';
+    default:
+      return hr + ' hrs ';
+  }
+};
+
+// Function to format minute(s) displayed in table
+let formatMin = function (min) {
+  switch (min) {
+    case 0:
+      return "";
+    case 1:
+      return min + ' min';
+    default:
+      return min + ' mins';
+  }
+};
