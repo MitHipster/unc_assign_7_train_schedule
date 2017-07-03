@@ -42,27 +42,24 @@ let isSaveBtn = false;
 // Submit button click event to get and push user input to firebase database
 $trainAddBtn.on('click', function (e) {
   e.preventDefault();
-  // This needs to be assigned in the click event or the default value will get stored
-  let $trainPer = $('[name="train-per"]:checked');
-  trainName = $trainName.val().trim();
-  trainDest = $trainDest.val().trim();
-  trainHr = parseInt($trainHr.val());
-  trainMin = parseInt($trainMin.val());
-  trainPer = parseInt($trainPer.val());
-  freqHrs = parseInt($freqHrs.val());
-  freqMins = parseInt($freqMins.val());
-  
-  // Push user input for train into database
-  db.ref().push({
-    trainName: trainName,
-    trainDest: trainDest,
-    trainHr: trainHr,
-    trainMin: trainMin,
-    trainPer: trainPer,
-    freqHrs: freqHrs,
-    freqMins: freqMins,
+  // Call function to return user input as an object and merge with timestamp
+  let trainObj = Object.assign(getFormInput(), {
     timestamp: firebase.database.ServerValue.TIMESTAMP
   });
+  // Push user input for train into database
+  db.ref().push(trainObj);
+  // Call function to reset form passing display styles for buttons
+  resetForm('inline-block', 'none');
+});
+
+$trainSaveBtn.on('click', function (e) {
+  e.preventDefault();
+  // Retrieve key from data attribute
+  let key = $(this).attr('data-key');
+  // Call function to return user input as an object
+  let trainObj = getFormInput();
+  // Update user input for edited train into database
+  db.ref().child(key).update(trainObj);
   // Call function to reset form passing display styles for buttons
   resetForm('inline-block', 'none');
 });
@@ -93,6 +90,9 @@ $tableBody.on('click', '.edit', function () {
   resetForm('none', 'inline-block');
   // Call function to get table row ID that equals node key
   let key = nodeKey($(this));
+  // Store key as data attribute on Save button
+  $trainSaveBtn.attr('data-key', key);
+  console.log($trainSaveBtn.data('key'));
   // Query firebase database using key value and population form with results
   db.ref().child(key).once('value').then(function (snapshot) {
     let data = snapshot.val();
@@ -116,6 +116,30 @@ db.ref().orderByChild('timestamp').on('child_added', function (snapshot) {
   console.log("Error handled: " + errorObj.code);
 });
 
+// Function to get values from the input fields and return as an object
+let getFormInput = function () {
+  // This needs to be assigned in the click event or the default value will get stored
+  let $trainPer = $('[name="train-per"]:checked');
+  trainName = $trainName.val().trim();
+  trainDest = $trainDest.val().trim();
+  trainHr = parseInt($trainHr.val());
+  trainMin = parseInt($trainMin.val());
+  trainPer = parseInt($trainPer.val());
+  freqHrs = parseInt($freqHrs.val());
+  freqMins = parseInt($freqMins.val());
+  
+  let trainObj = {
+    trainName: trainName,
+    trainDest: trainDest,
+    trainHr: trainHr,
+    trainMin: trainMin,
+    trainPer: trainPer,
+    freqHrs: freqHrs,
+    freqMins: freqMins,
+  };
+  return trainObj;
+};
+
 // Function to create and append table row with firebase train data
 let createHtml = function (snapshot) {
   let key = snapshot.key;
@@ -134,7 +158,6 @@ let createHtml = function (snapshot) {
       </td>
     </tr>`;
   $tableBody.append(html);
-  console.log(key, data.trainName, data.trainDest, data.trainHr);
 };
 
 // Function to return key assigned to table row element
@@ -156,7 +179,10 @@ let resetForm = function (add, save) {
   
   // Reset form buttons
   $trainAddBtn.css('display', add);
-  $trainSaveBtn.css('display', save);
+  $trainSaveBtn
+    .css('display', save)
+    .attr('data-key', '');
+  
   // If Add button display is none, Save button state is true
   isSaveBtn = (add === 'none' ? true : false);
 };
