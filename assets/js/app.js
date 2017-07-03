@@ -1,5 +1,5 @@
 /*jslint esversion: 6, browser: true*/
-/*global window, console, $, jQuery, firebase, alert*/
+/*global window, console, $, jQuery, firebase, moment, alert*/
 
 // Create a variable to reference the database.
 let db = firebase.database();
@@ -152,13 +152,15 @@ let getFormInput = function () {
 let buildHtml = function (snapshot, type) {
   let key = snapshot.key;
   let data = snapshot.val();
+  // Call function to get train's next arrival time
+  let nextTrain = nextArrival(data);
   let html;
   // Build out table data
   let tableData = 
      `<td>${data.trainName}</td>
       <td>${data.trainDest}</td>
       <td>${data.freqHrs} hrs ${data.freqMins} mins</td>
-      <td>6:00 PM</td>
+      <td>${nextTrain}</td>
       <td>0 hr 30 min</td>
       <td>
         <img class="edit" src="${editImg}" alt="">
@@ -207,3 +209,15 @@ let resetForm = function (add, save) {
   isSaveBtn = (add === 'none' ? true : false);
 };
 
+// Function to calculate train's next arrival time
+let nextArrival = function (data) {
+  // Switch first train's hour to 24 hour format
+  let trainHr = data.trainPer === 1 ? data.trainHr : data.trainHr + 12;
+  // Set first train time using moment function
+  let firstTrain = moment({hours: trainHr, minutes: data.trainMin});
+  // While first train time is less than current time, add train frequency
+  while (firstTrain.isBefore(moment(), 'minute')) {
+    firstTrain.add({hours: data.freqHrs, minutes: data.freqMins});
+  }
+  return firstTrain.format('h:mm A');
+};
