@@ -12,11 +12,17 @@
   padding: 0; }
 
 body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
   font-family: "Fira Sans Extra Condensed", sans-serif;
   font-size: 1rem;
   line-height: 1.4;
   background-color: #e8f1f2;
   color: #222; }
+
+main {
+  flex-grow: 1; }
 
 h1,
 h2,
@@ -97,6 +103,9 @@ table {
         width: 100%; }
     table td .edit {
       margin-right: 0.5rem; }
+  table tfoot td {
+    border-top: none;
+    padding-top: 1rem; }
 
 /* Form Styles
    ------------------------- */

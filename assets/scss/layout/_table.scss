@@ -38,4 +38,10 @@ table {
       margin-right: 0.5rem;
     }
   }
+  tfoot {
+    td {
+      border-top: none;
+      padding-top: 1rem;
+    }
+  }
 }

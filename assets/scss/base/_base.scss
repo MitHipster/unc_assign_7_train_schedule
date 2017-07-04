@@ -8,11 +8,18 @@
 }
 
 body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
   font-family: $stack-body;
   font-size: 1rem;
   line-height: 1.4;
   background-color: $color-bg-body;
   color: $color-text-dark;
+}
+
+main {
+  flex-grow: 1;
 }
 
 h1,
