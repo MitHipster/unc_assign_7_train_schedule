@@ -22,6 +22,8 @@ const $trainCancelBtn = $('#train-cancel-btn');
 
 const editImg = "assets/img/edit.svg";
 const delImg = "assets/img/trash.svg";
+
+// Variables to hold image titles
 const editTitle = "Click to edit below";
 const delTitle = "Click to delete";
 
@@ -119,7 +121,7 @@ $tableBody.on('click', '.edit', function () {
 // Event to retrieve firebase train data to populate table
 db.ref().orderByChild('timestamp').on('child_added', function (snapshot) {
   // Call create function
-  buildHtml(snapshot, 'create');
+  buildHtml(snapshot.key, snapshot.val(), 'create');
 // Error handler
 }, function (errorObj) {
   console.log("Error handled: " + errorObj.code);
@@ -128,7 +130,7 @@ db.ref().orderByChild('timestamp').on('child_added', function (snapshot) {
 // Event to update firebase train node and table data
 db.ref().on('child_changed', function (snapshot) {
   // Call update function
-  buildHtml(snapshot, 'update');
+  buildHtml(snapshot.key, snapshot.val(), 'update');
 // Error handler
 }, function (errorObj) {
   console.log("Error handled: " + errorObj.code);
@@ -159,9 +161,7 @@ let getFormInput = function () {
 };
 
 // Function to build and append table row or table data with firebase train data
-let buildHtml = function (snapshot, type) {
-  let key = snapshot.key;
-  let data = snapshot.val();
+let buildHtml = function (key, data, type) {
   // Call function to get train's next arrival time
   let nextTrain = nextArrival(data);
   // Call function to get time until arrival
@@ -172,10 +172,10 @@ let buildHtml = function (snapshot, type) {
   let html;
   // Build out table data
   let tableData = 
-     `<td>${data.trainName}</td>
-      <td>${data.trainDest}</td>
-      <td>${freq}</td>
-      <td>${nextTrain}</td>
+     `<td data-trainname="${data.trainName}">${data.trainName}</td>
+      <td data-traindest="${data.trainDest}">${data.trainDest}</td>
+      <td data-freqhrs="${data.freqHrs}" data-freqmins="${data.freqMins}">${freq}</td>
+      <td data-trainhr="${data.trainHr}" data-trainmin="${data.trainMin}" data-trainper="${data.trainPer}">${nextTrain}</td>
       <td>${arrives}</td>
       <td>
         <a class="edit" href="#link-to-bottom"><img src="${editImg}" title="${editTitle}" alt=""></a>
@@ -280,3 +280,31 @@ let formatMin = function (min) {
       return min + ' mins';
   }
 };
+
+// Moment timer function to update Next Arrival and Arrives In columns every minute
+let timer = moment.duration(1, 'minutes').timer({
+  loop: true
+}, function () {
+  let $tableRows = $('tbody tr');
+  $.each($tableRows, function (i, row) {
+    let r = $(row);
+    let key = r.attr('id');
+    let dtn = 'data-trainname',
+        dtd = 'data-traindest',
+        dth = 'data-trainhr',
+        dtm = 'data-trainMin',
+        dtp = 'data-trainPer',
+        dfh = 'data-freqHrs',
+        dfm = 'data-freqMins';
+    let data = {
+      trainName: r.find(`[${dtn}]`).attr(`${dtn}`),
+      trainDest: r.find(`[${dtd}]`).attr(`${dtd}`),
+      trainHr: parseInt(r.find(`[${dth}]`).attr(`${dth}`)),
+      trainMin: parseInt(r.find(`[${dtm}]`).attr(`${dtm}`)),
+      trainPer: parseInt(r.find(`[${dtp}]`).attr(`${dtp}`)),
+      freqHrs: parseInt(r.find(`[${dfh}]`).attr(`${dfh}`)),
+      freqMins: parseInt(r.find(`[${dfm}]`).attr(`${dfm}`))
+    };
+    buildHtml(key, data, 'update');
+  });
+});
