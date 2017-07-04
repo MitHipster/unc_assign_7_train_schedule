@@ -34,7 +34,7 @@
         <tbody></tbody>
       </table>
       <h2>Add/Edit Train</h2>
-      <form>
+      <form id="train-input">
         <div class="form-block">
           <label for="train-name">Train Name</label>
           <input id="train-name" type="text" placeholder="Acela Express" required>
@@ -92,8 +92,8 @@
           </fieldset>
         </div>
         <div class="form-block">
-          <button id="train-add-btn" type="button">Add</button>
-          <button id="train-save-btn" style="display: none" type="button">Save</button>
+          <button id="train-add-btn" type="submit" name="add">Add</button>
+          <button id="train-save-btn" style="display: none" type="submit" name="save">Save</button>
           <button id="train-cancel-btn" type="button">Cancel</button>
         </div>
       </form>

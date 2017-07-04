@@ -1,7 +1,7 @@
 /*jslint esversion: 6, browser: true*/
 /*global window, console, $, jQuery, firebase, moment, alert*/
 
-// Create a variable to reference the database.
+// Variable to reference the database.
 let db = firebase.database();
 
 // Set elements as jQuery objects
@@ -14,6 +14,8 @@ const $trainAm = $('#train-am');
 const $trainPm = $('#train-pm');
 const $freqHrs = $('#freq-hrs');
 const $freqMins = $('#freq-mins');
+const $trainInput = $('#train-input');
+const $trainSubmitBtn = $('#train-input button[type=submit]');
 const $trainAddBtn = $('#train-add-btn');
 const $trainSaveBtn = $('#train-save-btn');
 const $trainCancelBtn = $('#train-cancel-btn');
@@ -21,7 +23,7 @@ const $trainCancelBtn = $('#train-cancel-btn');
 const editImg = "assets/img/edit.svg";
 const delImg = "assets/img/trash.svg";
 
-// Declare variables to hold input values
+// Variables to hold input values
 let trainName = "";
 let trainDest = "";
 let trainHr = 0;
@@ -30,36 +32,42 @@ let trainPer = 0;
 let freqHrs = 0;
 let freqMins = 0;
 
-// Declare variables for input field defaults
+// Variables for input field defaults
 let trainHrDef = "6";
 let trainMinDef = "0";
 let freqHrsDef = "1";
 let freqMinsDef = "0";
 
-// Declare variable to hold whether or not Save button is hidden
+// Varible to hold name of submit button clicked
+let clickedBtn = "";
+
+// Variable to hold whether or not Save button is hidden
 let isSaveBtn = false;
 
-// Submit button click event to get and push user input to firebase database
-$trainAddBtn.on('click', function (e) {
-  e.preventDefault();
-  // Call function to return user input as an object and merge with timestamp
-  let trainObj = Object.assign(getFormInput(), {
-    timestamp: firebase.database.ServerValue.TIMESTAMP
-  });
-  // Push user input for train into database
-  db.ref().push(trainObj);
-  // Call function to reset form passing display styles for buttons
-  resetForm('inline-block', 'none');
+// Click event to determine which submit button was clicked
+$trainSubmitBtn.on('click', function (e) {
+  clickedBtn = $(this).attr('name');
 });
 
-$trainSaveBtn.on('click', function (e) {
+// Submit event to get and push user input to firebase database. Submit event was used to allow for HTML5 form validation
+$trainInput.submit(function (e) {
   e.preventDefault();
-  // Retrieve key from data attribute
-  let key = $(this).attr('data-key');
   // Call function to return user input as an object
   let trainObj = getFormInput();
-  // Update user input for edited train into database
-  db.ref().child(key).update(trainObj);
+  // Check which submit button was clicked
+  if (clickedBtn === 'add') {
+    // Merge user input and timestamp objects
+    trainObj = Object.assign(trainObj, {
+      timestamp: firebase.database.ServerValue.TIMESTAMP
+    });
+    // Push user input for train into database
+    db.ref().push(trainObj);
+  } else if (clickedBtn === 'save') {
+    // Retrieve key from data attribute
+    let key = $trainSaveBtn.attr('data-key');
+    // Update user input for edited train into database
+    db.ref().child(key).update(trainObj);
+  }
   // Call function to reset form passing display styles for buttons
   resetForm('inline-block', 'none');
 });
@@ -156,15 +164,15 @@ let buildHtml = function (snapshot, type) {
   let nextTrain = nextArrival(data);
   // Call function to get time until arrival
   let arrives = arrivesIn(nextTrain);
+  arrives = arrives.length === 0 ? 'Boarding' : arrives;
   // Function calls to format frequency
-  let freqHrs = formatHr(data.freqHrs);
-  let freqMins = formatMin(data.freqMins);
+  let freq = formatHr(data.freqHrs) + formatMin(data.freqMins);
   let html;
   // Build out table data
   let tableData = 
      `<td>${data.trainName}</td>
       <td>${data.trainDest}</td>
-      <td>${freqHrs}${freqMins}</td>
+      <td>${freq}</td>
       <td>${nextTrain}</td>
       <td>${arrives}</td>
       <td>
