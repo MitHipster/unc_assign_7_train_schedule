@@ -216,7 +216,7 @@ let nextArrival = function (data) {
   // Set first train time using moment function
   let firstTrain = moment({hours: trainHr, minutes: data.trainMin});
   // While first train time is less than current time, add train frequency
-  while (firstTrain.isBefore(moment(), 'minute')) {
+  while (firstTrain.isSameOrBefore(moment(), 'minute')) {
     firstTrain.add({hours: data.freqHrs, minutes: data.freqMins});
   }
   return firstTrain.format('h:mm A');
@@ -292,10 +292,10 @@ let timer = moment.duration(1, 'minutes').timer({
     let dtn = 'data-trainname',
         dtd = 'data-traindest',
         dth = 'data-trainhr',
-        dtm = 'data-trainMin',
-        dtp = 'data-trainPer',
-        dfh = 'data-freqHrs',
-        dfm = 'data-freqMins';
+        dtm = 'data-trainmin',
+        dtp = 'data-trainper',
+        dfh = 'data-freqhrs',
+        dfm = 'data-freqmins';
     let data = {
       trainName: r.find(`[${dtn}]`).attr(`${dtn}`),
       trainDest: r.find(`[${dtd}]`).attr(`${dtd}`),
@@ -308,3 +308,4 @@ let timer = moment.duration(1, 'minutes').timer({
     buildHtml(key, data, 'update');
   });
 });
+
