@@ -22,6 +22,8 @@ const $trainCancelBtn = $('#train-cancel-btn');
 
 const editImg = "assets/img/edit.svg";
 const delImg = "assets/img/trash.svg";
+const editTitle = "Click to edit below";
+const delTitle = "Click to delete";
 
 // Variables to hold input values
 let trainName = "";
@@ -176,8 +178,8 @@ let buildHtml = function (snapshot, type) {
       <td>${nextTrain}</td>
       <td>${arrives}</td>
       <td>
-        <img class="edit" src="${editImg}" alt="">
-        <img class="delete" src="${delImg}" alt="">
+        <img class="edit" src="${editImg}" title="${editTitle}" alt="">
+        <img class="delete" src="${delImg}" title="${delTitle}" alt="">
       </td>`;
   // If train data is new, add new table row
   if (type === 'create') {
@@ -203,7 +205,16 @@ let nodeKey = function (obj) {
 // Function to calculate train's next arrival time
 let nextArrival = function (data) {
   // Switch first train's hour to 24 hour format
-  let trainHr = data.trainPer === 1 ? data.trainHr : data.trainHr + 12;
+  let trainHr = 0;
+  if (data.trainHr < 12 && data.trainPer === 2) {
+    trainHr = data.trainHr + 12;
+  } else if (data.trainHr === 12 && data.trainPer === 2) {
+    trainHr = data.trainHr;
+  } else if (data.trainHr === 12 && data.trainPer === 1) {
+    trainHr = 0;
+  } else {
+    trainHr = data.trainHr;
+  }
   // Set first train time using moment function
   let firstTrain = moment({hours: trainHr, minutes: data.trainMin});
   // While first train time is less than current time, add train frequency
@@ -219,6 +230,8 @@ let arrivesIn = function (nextTrain) {
   let delta = moment(nextTrain, 'h:mm A').diff(moment(), 'minutes', true);
   // Round to nearest whole number
   delta = Math.round(delta);
+  // If time is negative add a day
+  delta = delta < 0 ? delta + (24 * 60) : delta;
   // Call function to format hours and mins
   delta = formatHr(Math.floor(delta / 60)) + formatMin(delta % 60);
   return delta;
