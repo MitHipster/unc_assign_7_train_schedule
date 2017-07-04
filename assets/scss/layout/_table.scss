@@ -19,7 +19,9 @@ table {
   td {
     padding: 0.25rem 0.5rem;
     border-top: 1px solid $color-border;
-    img {
+    .edit,
+    .delete {
+      display: inline-block;
       width: 24px;
       height: 24px;
       cursor: pointer;
@@ -28,8 +30,11 @@ table {
       &:hover {
         opacity: 1;
       }
+      img {
+        width: 100%;
+      }
     }
-    img:first-child {
+    .edit {
       margin-right: 0.5rem;
     }
   }

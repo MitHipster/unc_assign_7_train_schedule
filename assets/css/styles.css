@@ -81,15 +81,21 @@ table {
   table td {
     padding: 0.25rem 0.5rem;
     border-top: 1px solid #13293d; }
-    table td img {
+    table td .edit,
+    table td .delete {
+      display: inline-block;
       width: 24px;
       height: 24px;
       cursor: pointer;
       opacity: 0.6;
       transition: opacity 0.4s ease-out; }
-      table td img:hover {
+      table td .edit:hover,
+      table td .delete:hover {
         opacity: 1; }
-    table td img:first-child {
+      table td .edit img,
+      table td .delete img {
+        width: 100%; }
+    table td .edit {
       margin-right: 0.5rem; }
 
 /* Form Styles

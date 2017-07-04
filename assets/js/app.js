@@ -178,8 +178,8 @@ let buildHtml = function (snapshot, type) {
       <td>${nextTrain}</td>
       <td>${arrives}</td>
       <td>
-        <img class="edit" src="${editImg}" title="${editTitle}" alt="">
-        <img class="delete" src="${delImg}" title="${delTitle}" alt="">
+        <a class="edit" href="#link-to-bottom"><img src="${editImg}" title="${editTitle}" alt=""></a>
+        <a class="delete"><img src="${delImg}" title="${delTitle}" alt=""></a>
       </td>`;
   // If train data is new, add new table row
   if (type === 'create') {
@@ -208,8 +208,6 @@ let nextArrival = function (data) {
   let trainHr = 0;
   if (data.trainHr < 12 && data.trainPer === 2) {
     trainHr = data.trainHr + 12;
-  } else if (data.trainHr === 12 && data.trainPer === 2) {
-    trainHr = data.trainHr;
   } else if (data.trainHr === 12 && data.trainPer === 1) {
     trainHr = 0;
   } else {
