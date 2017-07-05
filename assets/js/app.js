@@ -6,14 +6,15 @@ let db = firebase.database();
 
 // Set elements as jQuery objects
 const $tableBody = $('tbody');
-const $trainName = $('#train-name');
-const $trainDest = $('#train-dest');
-const $trainHr = $('#train-hr');
-const $trainMin = $('#train-min');
-const $trainAm = $('#train-am');
-const $trainPm = $('#train-pm');
-const $freqHrs = $('#freq-hrs');
-const $freqMins = $('#freq-mins');
+var $trainName = $('#train-name');
+var $trainDest = $('#train-dest');
+var $trainHr = $('#train-hr');
+var $trainMin = $('#train-min');
+var $trainPer;
+var $trainAm = $('#train-am');
+var $trainPm = $('#train-pm');
+var $freqHrs = $('#freq-hrs');
+var $freqMins = $('#freq-mins');
 const $trainInput = $('#train-input');
 const $trainSubmitBtn = $('#train-input button[type=submit]');
 const $trainAddBtn = $('#train-add-btn');
@@ -27,14 +28,16 @@ const delImg = "assets/img/trash.svg";
 const editTitle = "Click to edit below";
 const delTitle = "Click to delete";
 
-// Variables to hold input values
-let trainName = "";
-let trainDest = "";
-let trainHr = 0;
-let trainMin = 0;
-let trainPer = 0;
-let freqHrs = 0;
-let freqMins = 0;
+// Array to hold data keys / attributes and flag for whether value is an integer or not
+let dataKeys = [
+  ["trainName", false],
+  ["trainDest", false],
+  ["trainHr", true],
+  ["trainMin", true],
+  ["trainPer", true],
+  ["freqHrs", true],
+  ["freqMins", true]
+];
 
 // Variables for input field defaults
 let trainHrDef = "6";
@@ -111,8 +114,8 @@ $tableBody.on('click', '.edit', function () {
     $trainDest.val(data.trainDest);
     $trainHr.val(data.trainHr);
     $trainMin.val(data.trainMin);
-    $trainAm.prop('checked', data.trainPer === 1 ? true: false);
-    $trainPm.prop('checked', data.trainPer === 2 ? true: false);
+    $trainAm.prop('checked', data.trainPer === 1 ? true : false);
+    $trainPm.prop('checked', data.trainPer === 2 ? true : false);
     $freqHrs.val(data.freqHrs);
     $freqMins.val(data.freqMins);
   });
@@ -120,7 +123,7 @@ $tableBody.on('click', '.edit', function () {
 
 // Event to retrieve firebase train data to populate table
 db.ref().orderByChild('timestamp').on('child_added', function (snapshot) {
-  // Call create function
+  // Call function to create table data
   buildHtml(snapshot.key, snapshot.val(), 'create');
 // Error handler
 }, function (errorObj) {
@@ -129,7 +132,7 @@ db.ref().orderByChild('timestamp').on('child_added', function (snapshot) {
 
 // Event to update firebase train node and table data
 db.ref().on('child_changed', function (snapshot) {
-  // Call update function
+  // Call function to update table data
   buildHtml(snapshot.key, snapshot.val(), 'update');
 // Error handler
 }, function (errorObj) {
@@ -138,25 +141,22 @@ db.ref().on('child_changed', function (snapshot) {
 
 // Function to get values from the input fields and return as an object
 let getFormInput = function () {
+  let trainObj = {};
   // This needs to be assigned in the click event or the default value will get stored
-  let $trainPer = $('[name="train-per"]:checked');
-  trainName = $trainName.val().trim();
-  trainDest = $trainDest.val().trim();
-  trainHr = parseInt($trainHr.val());
-  trainMin = parseInt($trainMin.val());
-  trainPer = parseInt($trainPer.val());
-  freqHrs = parseInt($freqHrs.val());
-  freqMins = parseInt($freqMins.val());
-  
-  let trainObj = {
-    trainName: trainName,
-    trainDest: trainDest,
-    trainHr: trainHr,
-    trainMin: trainMin,
-    trainPer: trainPer,
-    freqHrs: freqHrs,
-    freqMins: freqMins,
-  };
+  $trainPer = $('[name="train-per"]:checked');
+  // Using dataKeys array, loop through each data-attribute, convert value to integer (if applicable), and add to data object
+  $.each(dataKeys, function(i, key) {
+    let k0 = key[0];
+    let k1 = key[1];
+    let k2 = '$' + k0;
+    let v = window[k2].val();
+    if (k1 === true) {
+      v = parseInt(v);
+    } else {
+      v = v.trim();
+    }
+    trainObj[k0] = v;
+  });
   return trainObj;
 };
 
@@ -166,7 +166,7 @@ let buildHtml = function (key, data, type) {
   let nextTrain = nextArrival(data);
   // Call function to get time until arrival
   let arrives = arrivesIn(nextTrain);
-  arrives = arrives.length === 0 ? 'Boarding' : arrives;
+  arrives = (arrives.length === 0 ? 'Boarding' : arrives);
   // Function calls to format frequency
   let freq = formatHr(data.freqHrs) + formatMin(data.freqMins);
   let html;
@@ -229,7 +229,7 @@ let arrivesIn = function (nextTrain) {
   // Round to nearest whole number
   delta = Math.round(delta);
   // If time is negative add a day
-  delta = delta < 0 ? delta + (24 * 60) : delta;
+  delta = (delta < 0 ? delta + (24 * 60) : delta);
   // Call function to format hours and mins
   delta = formatHr(Math.floor(delta / 60)) + formatMin(delta % 60);
   return delta;
@@ -257,6 +257,28 @@ let resetForm = function (add, save) {
   isSaveBtn = (add === 'none' ? true : false);
 };
 
+// Moment timer function with loop to update Next Arrival and Arrives In columns
+let timer = moment.duration(1, 'minutes').timer({
+  loop: true
+}, function () {
+  let $tableRows = $('tbody tr');
+  // Loop through each row in tbody
+  $.each($tableRows, function (i, row) {
+    let r = $(row);
+    let key = r.attr('id');
+    let data = {};
+    // Using dataKeys array, loop through each data-attribute, convert value to integer (if applicable), and add to data object
+    $.each(dataKeys, function(i, key) {
+      let k0 = key[0];
+      let k1 = key[1];
+      let v = r.find(`[data-${k0}]`).attr(`data-${k0}`);
+      data[k0] = (k1 === true ? parseInt(v) : v);
+    });
+    // Call function to update table data 
+    buildHtml(key, data, 'update');
+  });
+});
+
 // Function to format hour(s) displayed in table
 let formatHr = function (hr) {
   switch (hr) {
@@ -280,32 +302,3 @@ let formatMin = function (min) {
       return min + ' mins';
   }
 };
-
-// Moment timer function to update Next Arrival and Arrives In columns every minute
-let timer = moment.duration(1, 'minutes').timer({
-  loop: true
-}, function () {
-  let $tableRows = $('tbody tr');
-  $.each($tableRows, function (i, row) {
-    let r = $(row);
-    let key = r.attr('id');
-    let dtn = 'data-trainname',
-        dtd = 'data-traindest',
-        dth = 'data-trainhr',
-        dtm = 'data-trainmin',
-        dtp = 'data-trainper',
-        dfh = 'data-freqhrs',
-        dfm = 'data-freqmins';
-    let data = {
-      trainName: r.find(`[${dtn}]`).attr(`${dtn}`),
-      trainDest: r.find(`[${dtd}]`).attr(`${dtd}`),
-      trainHr: parseInt(r.find(`[${dth}]`).attr(`${dth}`)),
-      trainMin: parseInt(r.find(`[${dtm}]`).attr(`${dtm}`)),
-      trainPer: parseInt(r.find(`[${dtp}]`).attr(`${dtp}`)),
-      freqHrs: parseInt(r.find(`[${dfh}]`).attr(`${dfh}`)),
-      freqMins: parseInt(r.find(`[${dfm}]`).attr(`${dfm}`))
-    };
-    buildHtml(key, data, 'update');
-  });
-});
-
