@@ -59,24 +59,31 @@ $trainSubmitBtn.on('click', function (e) {
 // Submit event to get and push user input to firebase database. Submit event was used to allow for HTML5 form validation
 $trainInput.submit(function (e) {
   e.preventDefault();
-  // Call function to return user input as an object
-  let trainObj = getFormInput();
-  // Check which submit button was clicked
-  if (clickedBtn === 'add') {
-    // Merge user input and timestamp objects
-    trainObj = Object.assign(trainObj, {
-      timestamp: firebase.database.ServerValue.TIMESTAMP
-    });
-    // Push user input for train into database
-    db.ref().push(trainObj);
-  } else if (clickedBtn === 'save') {
-    // Retrieve key from data attribute
-    let key = $trainSaveBtn.attr('data-key');
-    // Update user input for edited train into database
-    db.ref().child(key).update(trainObj);
+  // Before submitting, verify that the frequency entered it valid
+  if ($freqHrs.val() === '0' && $freqMins.val() === '0') {
+    alert('Train frequency must be greater than 0. Please enter a valid time.');
+  } else if ($freqHrs.val() === '24' && $freqMins.val() > '0') {
+    alert('Train frequency must be less than or equal to 24 hours. Please enter a valid time.');
+  } else {
+    // If valid, call function to return user input as an object
+    let trainObj = getFormInput();
+    // Check which submit button was clicked
+    if (clickedBtn === 'add') {
+      // Merge user input and timestamp objects
+      trainObj = Object.assign(trainObj, {
+        timestamp: firebase.database.ServerValue.TIMESTAMP
+      });
+      // Push user input for train into database
+      db.ref().push(trainObj);
+    } else if (clickedBtn === 'save') {
+      // Retrieve key from data attribute
+      let key = $trainSaveBtn.attr('data-key');
+      // Update user input for edited train into database
+      db.ref().child(key).update(trainObj);
+    }
+    // Call function to reset form passing display styles for buttons
+    resetForm('inline-block', 'none');
   }
-  // Call function to reset form passing display styles for buttons
-  resetForm('inline-block', 'none');
 });
 
 // Cancel button click event to clear and reset form
