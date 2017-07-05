@@ -120,7 +120,7 @@ form {
     height: 80px;
     border: 1px solid #13293d; }
 
-/* Header Styles
+/* Footer Styles
    ------------------------- */
 footer {
   min-width: 667px;
@@ -130,6 +130,38 @@ footer {
   color: #fff;
   margin-top: 4rem;
   padding: 2rem 0; }
+
+/* Overlay Styles
+   ------------------------- */
+.overlay {
+  position: fixed;
+  display: none;
+  width: 120%;
+  height: 120%;
+  top: -10%;
+  left: -10%;
+  right: -10%;
+  bottom: -10%;
+  font-family: "Lato", sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  background-color: rgba(1, 12, 26, 0.5);
+  z-index: 100; }
+  .overlay .alert-container {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    top: 50%;
+    left: 50%;
+    background-color: #e8f1f2;
+    padding: 2rem;
+    transform: translate(-50%, -50%); }
+    .overlay .alert-container h3 {
+      font-size: 1.5rem;
+      padding-bottom: 1rem; }
+    .overlay .alert-container button {
+      align-self: flex-end; }
 
 /* Components Imports
    ------------------------- */

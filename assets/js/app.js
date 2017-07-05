@@ -51,6 +51,15 @@ let clickedBtn = "";
 // Variable to hold whether or not Save button is hidden
 let isSaveBtn = false;
 
+// Variables to hold modal components and alerts
+const $overlay = $('.overlay');
+const $alert = $('#alert');
+const $okBtn = $('#ok-btn');
+const alerts = [
+  "Train frequency must be greater than 0 minutes. Please enter a valid time.",
+  "Train frequency must be less than or equal to 24 hours. Please enter a valid time."
+];
+
 // Click event to determine which submit button was clicked
 $trainSubmitBtn.on('click', function (e) {
   clickedBtn = $(this).attr('name');
@@ -59,11 +68,13 @@ $trainSubmitBtn.on('click', function (e) {
 // Submit event to get and push user input to firebase database. Submit event was used to allow for HTML5 form validation
 $trainInput.submit(function (e) {
   e.preventDefault();
-  // Before submitting, verify that the frequency entered it valid
+  // Before submitting, verify that the frequency entered is valid. If not, show user modal message
   if ($freqHrs.val() === '0' && $freqMins.val() === '0') {
-    alert('Train frequency must be greater than 0. Please enter a valid time.');
+    $alert.text(alerts[0]);
+    $overlay.toggle('shake', 400);
   } else if ($freqHrs.val() === '24' && $freqMins.val() > '0') {
-    alert('Train frequency must be less than or equal to 24 hours. Please enter a valid time.');
+    $alert.text(alerts[1]);
+    $overlay.toggle('shake', 400);
   } else {
     // If valid, call function to return user input as an object
     let trainObj = getFormInput();
@@ -90,6 +101,10 @@ $trainInput.submit(function (e) {
 $trainCancelBtn.on('click', function () {
   // Call function to reset form passing display styles for buttons
   resetForm('inline-block', 'none');
+});
+
+$okBtn.on('click', function () {
+  $overlay.toggle('fade', 400);
 });
 
 // Delete button click event to remove node from firebase and remove element from table

@@ -16,7 +16,7 @@
         <img id="logo" src="assets/img/train.svg" alt="Train on track icon">
         <h1>Train<span>Trackr</span></h1>
         <h3>Follow the train schedules you care about.</h3>
-      </div>
+      </div> <!-- End header container -->
     </header>
     <main class="container">
       <h2>Current Train Schedule</h2>
@@ -43,11 +43,11 @@
         <div class="form-block">
           <label for="train-name">Train Name</label>
           <input id="train-name" type="text" placeholder="Acela Express" required>
-        </div>
+        </div> <!-- End form-block -->
         <div class="form-block">
           <label for="train-dest">Destination</label>
           <input id="train-dest" type="text" placeholder="Boston, MA" required>
-        </div>
+        </div> <!-- End form-block -->
         <div class="form-block">
           <fieldset>
             <legend>First Train Time</legend>
@@ -86,7 +86,7 @@
             <input id="train-pm" type="radio" name="train-per" value="2">
             <label for="train-pm">PM</label>
           </fieldset>
-        </div>
+        </div> <!-- End form-block -->
         <div class="form-block">
           <fieldset>
             <legend>Frequency</legend>
@@ -95,21 +95,29 @@
             <label for="freq-mins">Mins</label>
             <input id="freq-mins" type="number" min="0" max="59" value="0" required>
           </fieldset>
-        </div>
+        </div> <!-- End form-block -->
         <div class="form-block">
           <button id="train-add-btn" type="submit" name="add">Add</button>
           <button id="train-save-btn" style="display: none" type="submit" name="save">Save</button>
           <button id="train-cancel-btn" type="button">Cancel</button>
-        </div>
+        </div> <!-- End form-block -->
       </form>
-    </main>
+    </main> <!-- End main container -->
     <footer id="link-to-bottom">
       <div class="container">
         <p>&copy; 2017 Tim Acker</p>
-      </div>
+      </div> <!-- End footer container -->
     </footer>
+    <div class="overlay">
+      <div class="alert-container">
+        <h3>Invalid Entry</h3>
+        <p id="alert"></p>
+        <button id="ok-btn" type="button">OK</button>
+      </div> <!-- End alerts -->
+    </div> <!-- End overlay -->
   <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
   <script type="text/javascript" src="assets/js/moment-timer.js"></script>
   <script type="text/javascript" src="assets/js/config.js"></script>
