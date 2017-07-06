@@ -1,6 +1,17 @@
 /*jslint esversion: 6, browser: true*/
 /*global window, console, $, jQuery, firebase, moment, alert*/
 
+// Initialize Firebase
+var config = {
+  apiKey: "AIzaSyArQm11nPtvVYgkIQzaXxBE7ENFi2QhUM0",
+  authDomain: "unc-assign-7.firebaseapp.com",
+  databaseURL: "https://unc-assign-7.firebaseio.com",
+  projectId: "unc-assign-7",
+  storageBucket: "unc-assign-7.appspot.com",
+  messagingSenderId: "999183717479"
+};
+firebase.initializeApp(config);
+
 // Variable to reference the database.
 let db = firebase.database();
 
