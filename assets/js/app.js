@@ -172,6 +172,15 @@ db.ref().on('child_changed', function (snapshot) {
   console.log("Error handled: " + errorObj.code);
 });
 
+// Event to synchronize table data for nodes deleted by other users
+db.ref().on('child_removed', function (snapshot) {
+  let key = snapshot.key;
+  $tableBody.find(`#${key}`).remove();
+// Error handler
+}, function (errorObj) {
+  console.log("Error handled: " + errorObj.code);
+});
+
 // Function to get values from the input fields and return as an object
 let getFormInput = function () {
   let trainObj = {};
