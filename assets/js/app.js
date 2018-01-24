@@ -2,7 +2,7 @@
 /*global window, console, $, jQuery, firebase, moment, alert*/
 
 // Initialize Firebase
-var config = {
+const config = {
   apiKey: "AIzaSyArQm11nPtvVYgkIQzaXxBE7ENFi2QhUM0",
   authDomain: "unc-assign-7.firebaseapp.com",
   databaseURL: "https://unc-assign-7.firebaseio.com",
@@ -17,20 +17,17 @@ let db = firebase.database();
 
 // Set elements as jQuery objects
 const $tableBody = $('tbody');
-var $trainName = $('#train-name');
-var $trainDest = $('#train-dest');
-var $trainHr = $('#train-hr');
-var $trainMin = $('#train-min');
-var $trainPer;
-var $trainAm = $('#train-am');
-var $trainPm = $('#train-pm');
-var $freqHrs = $('#freq-hrs');
-var $freqMins = $('#freq-mins');
+const $trainName = $('#train-name'), $trainDest = $('#train-dest');
+
+const $trainHr = $('#train-hr'), $trainMin = $('#train-min');
+const $trainAm = $('#train-am'), $trainPm = $('#train-pm');
+let $trainPer;
+const $freqHrs = $('#freq-hrs'), $freqMins = $('#freq-mins');
+
 const $trainInput = $('#train-input');
 const $trainSubmitBtn = $('#train-input button[type=submit]');
-const $trainAddBtn = $('#train-add-btn');
-const $trainSaveBtn = $('#train-save-btn');
-const $trainCancelBtn = $('#train-cancel-btn');
+
+const $trainAddBtn = $('#train-add-btn'), $trainSaveBtn = $('#train-save-btn'), $trainCancelBtn = $('#train-cancel-btn');
 
 const editImg = "assets/img/edit.svg";
 const delImg = "assets/img/trash.svg";
@@ -213,7 +210,7 @@ let buildHtml = function (key, data, type) {
   let freq = formatHr(data.freqHrs) + formatMin(data.freqMins);
   let html;
   // Build out table data
-  let tableData = 
+  let tableData =
      `<td data-trainname="${data.trainName}">${data.trainName}</td>
       <td data-traindest="${data.trainDest}">${data.trainDest}</td>
       <td data-freqhrs="${data.freqHrs}" data-freqmins="${data.freqMins}">${freq}</td>
@@ -225,7 +222,7 @@ let buildHtml = function (key, data, type) {
       </td>`;
   // If train data is new, add new table row
   if (type === 'create') {
-    html = 
+    html =
      `<tr id="${key}">
         ${tableData}
       </tr>`;
@@ -288,13 +285,13 @@ let resetForm = function (add, save) {
   $trainPm.prop('checked', false);
   $freqHrs.val(freqHrsDef);
   $freqMins.val(freqMinsDef);
-  
+
   // Reset form buttons
   $trainAddBtn.css('display', add);
   $trainSaveBtn
     .css('display', save)
     .attr('data-key', '');
-  
+
   // If Add button display is none, Save button state is true
   isSaveBtn = (add === 'none' ? true : false);
 };
@@ -316,7 +313,7 @@ let timer = moment.duration(1, 'minutes').timer({
       let v = r.find(`[data-${k0}]`).attr(`data-${k0}`);
       data[k0] = (k1 === true ? parseInt(v) : v);
     });
-    // Call function to update table data 
+    // Call function to update table data
     buildHtml(key, data, 'update');
   });
 });
